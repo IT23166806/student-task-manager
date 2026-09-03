@@ -5,6 +5,7 @@ import "./App.css";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -175,13 +176,23 @@ const handleEdit = (task) => {
           {editingId ? "Update Task" : "Add Task"}
         </button>
       </form>
+      
+      <input
+      type="text"
+      placeholder="Search tasks..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
 
       <h2>My Tasks</h2>
 
       {tasks.length === 0 ? (
         <p>No tasks available.</p>
       ) : (
-        tasks.map((task) => (
+        tasks.filter((task) =>
+          task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          task.description.toLowerCase().includes(searchTerm.toLowerCase())
+        ).map((task) => (
           <div className="task-card" key={task._id}>
 
             <h3>{task.title}</h3>
